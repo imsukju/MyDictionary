@@ -1,0 +1,149 @@
+### InvocationHandler  
+InvocationHandler는 Java의 리플렉션(Reflection)과 프록시(Proxy) 메커니즘과 관련된 인터페이스입니다. 
+InvocationHandler는 동적 프록시(dynamic proxy)를 생성하는 데 사용됩니다. 
+동적 프록시는 런타임에 특정 인터페이스를 구현하는 객체를 생성할 수 있는 기능을 제공합니다. 
+
+
+
+```java
+interface MyInterface {
+    void doSomething();
+}
+
+class MyInvocationHandler implements InvocationHandler {
+    private Object target;
+
+    public MyInvocationHandler(Object target) {
+        this.target = target;
+    }
+
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        System.out.println("Before method " + method.getName());
+        Object result = method.invoke(target, args);
+        System.out.println("After method " + method.getName());
+        return result;
+    }
+}
+
+class MyClass implements MyInterface {
+    @Override
+    public void doSomething() {
+        System.out.println("Doing something...");
+    }
+}
+
+public class ProxyExample {
+    public static void main(String[] args) {
+        MyInterface myObject = new MyClass();
+        MyInvocationHandler handler = new MyInvocationHandler(myObject);
+
+        MyInterface proxyInstance = (MyInterface) Proxy.newProxyInstance(
+                myObject.getClass().getClassLoader(),
+                myObject.getClass().getInterfaces(),
+                handler);
+
+        proxyInstance.doSomething();
+    }
+}
+
+```
+이 예제에서:
+- `MyInterface`는 프록시가 구현할 인터페이스입니다.
+- **MyInvocationHandler**는 `InvocationHandler` 인터페이스를 구현하며, `invoke` 메서드에서 메서드 호출 전후에 추가 로직을 수행합니다.
+- `Proxy.newProxyInstance` 메서드를 사용하여 동적 프록시 객체를 생성합니다.
+- 이렇게 생성된 프록시 객체는 `doSomething` 메서드를 호출할 때 `MyInvocationHandler`의 `invoke` 메서드로 실제 메서드 호출을 가로챕니다. 
+- 이를 통해 로깅, 접근 제어, 트랜잭션 관리 등 다양한 기능을 쉽게 구	현할 수 있습니다.
+
+
+### invoke Method
+ 이 설명은 Java의 `Method.invoke` 메서드가 어떻게 동작하는지를 설명하고 있습니다. 이를 더 쉽게 풀어보면 다음과 같습니다:
+
+1. **기본 메서드 호출**:
+   - `Method.invoke`는 특정 객체의 메서드를 실행하는 데 사용됩니다. 예를 들어, 어떤 객체가 가지고 있는 메서드를 호출하고 싶을 때 이 메서드를 사용합니다.
+
+2. **매개변수 처리**:
+   - 메서드에 전달되는 매개변수는 기본형(예: `int`, `boolean`)이면 자동으로 언랩(unwrapped)됩니다. 즉, 객체 형태로 전달된 값을 기본형으로 변환해줍니다.
+   - 기본형이나 참조형(예: `String`, `Integer`) 매개변수는 필요에 따라 메서드 호출에 맞게 변환됩니다.
+
+3. **Static 메서드의 경우**:
+   - 만약 호출하려는 메서드가 `static` 메서드라면, `Method.invoke`에서 첫 번째 인자로 전달된 객체(`obj`)는 무시됩니다. 이 경우, 이 인자는 `null`일 수 있습니다.
+
+4. **매개변수 없는 메서드**:
+   - 메서드가 매개변수를 요구하지 않는다면, `args` 배열이 비어 있거나 `null`일 수 있습니다.
+
+5. **인스턴스 메서드의 경우**:
+   - 인스턴스 메서드(객체에 속하는 메서드)를 호출할 때는, Java는 런타임에 객체의 실제 타입에 따라 올바른 메서드를 찾아 호출합니다. 이를 동적 메서드 조회라고 합니다. 예를 들어, 상속된 클래스에서 메서드를 오버라이드(재정의)한 경우, 오버라이드된 메서드가 호출됩니다.
+
+6. **Static 메서드 초기화**:
+   - 만약 호출하려는 `static` 메서드를 포함하는 클래스가 아직 초기화되지 않았다면, 이 메서드가 호출될 때 클래스가 초기화됩니다.
+
+7. **메서드 결과 반환**:
+   - 메서드가 정상적으로 실행되면 그 결과를 `invoke` 메서드가 반환합니다.
+   - 반환된 값이 기본형(예: `int`, `boolean`)일 경우, 이 값은 객체로 감싸져서 반환됩니다. 그러나 기본형 타입의 배열이 반환되는 경우, 배열의 요소들은 객체로 감싸지지 않고 그대로 반환됩니다.
+   - 메서드의 반환 타입이 `void`인 경우, `invoke` 메서드는 `null`을 반환합니다.
+
+### 요약:
+`Method.invoke` 메서드는 Java에서 리플렉션을 사용해 메서드를 호출하는 방법입니다. 이 메서드는 다양한 상황에서 자동으로 매개변수를 처리하고, 메서드가 정상적으로 완료되면 그 결과를 반환합니다. Static 메서드나 인스턴스 메서드 모두 이 방법을 통해 호출할 수 있습니다.   
+
+
+
+ - **공식 설명(English)**  
+    Invokes the underlying method represented by this Methodobject, on the specified object with the specified parameters.Individual parameters are automatically unwrapped to matchprimitive formal parameters, and both primitive and referenceparameters are subject to method invocation conversions asnecessary. 
+
+	If the underlying method is static, then the specified objargument is ignored. It may be null. 
+
+	If the number of formal parameters required by the underlying method is0, the supplied args array may be of length 0 or null. 
+
+	If the underlying method is an instance method, it is invokedusing dynamic method lookup as documented in The Java LanguageSpecification, section {@jls 15.12.4.4}; in particular,overriding based on the runtime type of the target object may occur. 
+
+	If the underlying method is static, the class that declaredthe method is initialized if it has not already been initialized. 
+
+	If the method completes normally, the value it returns isreturned to the caller of invoke; if the value has a primitivetype, it is first appropriately wrapped in an object. However,if the value has the type of an array of a primitive type, theelements of the array are not wrapped in objects; inother words, an array of primitive type is returned. If theunderlying method return type is void, the invocation returnsnull.
+	Parameters:
+	obj the object the underlying method is invoked fromargs the arguments used for the method call
+	Returns:
+	the result of dispatching the method represented bythis object on obj with parameters argsThrows:IllegalAccessException - if this Method objectis enforcing Java language access control and the underlyingmethod is inaccessible.IllegalArgumentException - if the method is aninstance method and the specified object argumentis not an instance of the class or interfacedeclaring the underlying method (or of a subclassor implementor thereof); if the number of actualand formal parameters differ; if an unwrappingconversion for primitive arguments fails; or if,after possible unwrapping, a parameter valuecannot be converted to the corresponding formalparameter type by a method invocation conversion.InvocationTargetException - if the underlying methodthrows an exception.NullPointerException - if the specified object is nulland the method is an instance method.ExceptionInInitializerError - if the initializationprovoked by this method fails.
+
+- **번역**  
+	
+	이 메서드는 이 Method 객체가 나타내는 기본 메서드를 지정된 객체에서 지정된 매개변수를 사용하여 호출합니다. 개별 매개변수는 기본 형식의 매개변수와 일치하도록 자동으로 언랩(unwrapped)되며, 기본형 및 참조형 매개변수는 필요에 따라 메서드 호출 변환(method invocation conversion)을 거칩니다.
+
+	만약 기본 메서드가 static 메서드라면, 지정된 obj 인수는 무시됩니다. 이 경우 obj는 null일 수 있습니다.
+
+	기본 메서드가 요구하는 매개변수의 수가 0인 경우, 제공된 args 배열의 길이는 0이거나 null일 수 있습니다.
+
+	기본 메서드가 인스턴스 메서드인 경우, 자바 언어 명세서(Java Language Specification) 섹션 {@jls 15.12.4.4}에 문서화된 대로 동적 메서드 조회(dynamic method lookup)를 사용하여 호출됩니다. 특히, 대상 객체의 런타임 타입에 따라 메서드 오버라이딩이 발생할 수 있습니다.
+
+	기본 메서드가 static 메서드인 경우, 해당 메서드를 선언한 클래스는 초기화되지 않은 상태라면 초기화됩니다.
+
+	메서드가 정상적으로 완료되면, 그 메서드가 반환하는 값이 invoke 메서드의 호출자에게 반환됩니다. 반환 값이 기본형 타입인 경우, 적절하게 객체로 래핑(wrapped)됩니다. 하지만 반환 값이 기본형 타입의 배열인 경우, 배열의 요소는 객체로 래핑되지 않습니다. 다시 말해, 기본형 타입의 배열이 반환됩니다. 기본 메서드의 반환 타입이 void인 경우, 호출 결과로 null이 반환됩니다.
+
+	parameters:
+	obj: 기본 메서드가 호출되는 객체
+	args: 메서드 호출에 사용되는 인수들
+	반환값:
+	이 객체가 나타내는 메서드를 obj에서 args 매개변수로 디스패치한 결과
+	예외:
+	IllegalAccessException: 이 Method 객체가 자바 언어 접근 제어를 강제하고 있고, 기본 메서드에 접근할 수 없는 경우 발생
+	IllegalArgumentException: 메서드가 인스턴스 메서드인데, 지정된 객체 인수가 기본 메서드를 선언한 클래스 또는 인터페이스(혹은 그 하위 클래스나 구현체)의 인스턴스가 아닌 경우; 실제 인수와 형식 인수의 수가 다른 경우; 기본형 인수의 언랩핑 변환이 실패한 경우; 또는 언랩핑 후에도 매개변수 값을 해당 형식 매개변수 타입으로 변환할 수 없는 경우 발생
+	InvocationTargetException: 기본 메서드가 예외를 던지는 경우 발생
+	NullPointerException: 지정된 객체가 null이고 메서드가 인스턴스 메서드인 경우 발생
+	ExceptionInInitializerError: 이 메서드에 의해 유발된 초기화가 실패한 경우 발생
+	설명:
+	이 메서드는 Java Reflection API의 일부로, 런타임에 메서드를 동적으로 호출할 수 있도록 해줍니다. 특히, 메서드가 static인지 인스턴스 메서드인지, 반환 타입이 기본형인지 참조형인지에 따라 호출 방법과 반환값이 다릅니다. 예외가 많이 발생할 수 있으므로 호출 시 이에 대한 처리가 필요합니다.
+
+
+### Dynamic Proxy 메커니즘  
+동적 프록시가 인터페이스의 메서드를 호출할 때마다 `InvocationHandler` 인터페이스의 `invoke` 메서드가 호출되도록 설계되어 있습니다.  
+아래와 같은 과정을 통해 `invoke` 메서드로 제어가 넘어갑니다:  
+1. 프록시 인스턴스 생성: `1Proxy.newProxyInstance1` 메서드는 지정된 인터페이스(`InterfaceA`, `InterfaceB`)를 구현하는 프록시 객체를 생성합니다. 이 프록시 객체는 실제 구현체(`1classA`, `classB`)에 대한 참조를 직접 가지지 않고, 대신 프록시의 모든 메서드 호출을 처리할 `1InvocationHandler1`를 가집니다.   
+2. 메서드 호출: `((InterfaceA) proxyInstance).duplicateMethod();`가 호출되면, `proxyInstance`는 동적 프록시 객체이기 때문에 실제로 `InterfaceA`의 `duplicateMethod()`를 직접 실행하지 않고, `InvocationHandler`의 `invoke` 메서드가 호출됩니다.  
+3. `invoke` 메서드 호출: `InvocationHandler`의 `invoke` 메서드는 다음과 같은 시그니처를 가지고 있습니다:
+    ``` java
+    Object invoke(Object proxy, Method method, Object[] args) throws Throwable;
+    ```
+    이 메서드는 다음과 같은 인자를 받습니다:
+    - `proxy`: 호출된 프록시 객체 자신.
+    - `method`: 호출된 메서드를 나타내는 Method 객체.
+    - `args`: 호출된 메서드에 전달된 인자들.

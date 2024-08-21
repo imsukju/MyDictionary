@@ -1,0 +1,133 @@
+### Non-reflective 코드  
+Non-reflective 코드는 프로그램이 작성된 대로만 실행되며, 실행 중에 자신의 구조나 행동, 메타데이터를 분석하거나 수정하지 않는 코드입니다. 이러한 코드는 정적인 구조를 가지며, 실행 중에 변경되지 않습니다. 대부분의 일반적인 프로그램은 non-reflective 코드로 구성됩니다.  
+
+```java
+class Dog {
+    private String name;
+
+    public Dog(String name) {
+        this.name = name;
+    }
+
+    public String bark() {
+        return "Woof!";
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Dog dog = new Dog("Buddy");
+        System.out.println(dog.bark());
+    }
+}
+```
+이 코드에서는 `Dog` 클래스가 정의된 대로 동작하며, 프로그램이 실행 중에 클래스의 메타데이터나 구조를 탐색하거나 수정할 수 없습니다.
+
+### Reflective 코드  
+Reflective 코드는 프로그램이 실행 중에 자신의 구조, 상태, 또는 행동을 분석하거나 수정할 수 있는 코드입니다. 이를 통해 프로그램은 동적으로 자신을 조정할 수 있습니다.
+Java에서 reflective 코드는 프로그램이 실행 중에 자신의 구조, 상태, 또는 메타데이터를 분석하거나 수정할 수 있는 코드입니다. 이를 통해 프로그램은 동적으로 자신을 조정하거나 변경할 수 있습니다.
+Java에서는 java.lang.reflect 패키지를 통해 reflection 기능을 제공합니다.
+
+Reflective 코드를 사용하면 클래스의 메타데이터(예: 클래스 이름, 메서드, 필드 등)를 실행 중에 동적으로 탐색하고, 필요에 따라 동적으로 메서드를 호출하거나 필드에 접근할 수 있습니다.
+```java
+import java.lang.reflect.Method;
+
+class Dog {
+    private String name;
+
+    public Dog(String name) {
+        this.name = name;
+    }
+
+    public String bark() {
+        return "Woof!";
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        try {
+            Dog dog = new Dog("Buddy");
+
+            // Reflection을 사용하여 클래스 이름 출력
+            Class<?> dogClass = dog.getClass();
+            System.out.println("Class Name: " + dogClass.getName());
+
+            // Reflection을 사용하여 메서드 이름 출력
+            Method[] methods = dogClass.getDeclaredMethods();
+            for (Method method : methods) {
+                System.out.println("Method Name: " + method.getName());
+            }
+
+            // Reflection을 사용하여 메서드 호출
+            Method barkMethod = dogClass.getDeclaredMethod("bark");
+            String result = (String) barkMethod.invoke(dog);
+            System.out.println("Bark Method Output: " + result);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+```
+이 코드에서는 Class, Method 등의 Reflection API를 사용하여 Dog 클래스의 메타데이터를 동적으로 분석하고, bark 메서드를 동적으로 호출합니다. 이와 같이 reflection을 통해 프로그램은 런타임에 자신의 구조나 동작을 검사하고 변경할 수 있습니다.
+
+```java
+public class Deet<T> {
+    private boolean testDeet(Locale l) {
+		// getISO3Language() may throw a MissingResourceException
+		out.format("Locale = %s, ISO Language Code = %s%n", l.getDisplayName(), l.getISO3Language());
+		return true;
+	    }
+
+    private int testFoo(Locale l) { return 0; }
+    private boolean testBar() { return true; }
+
+    //Deet ja JP JP
+    public static void main(String... args) {
+		if (args.length != 4) {
+		    err.format("Usage: java Deet <classname> <langauge> <country> <variant>%n");
+		    return;
+		}
+
+		try {
+		    Class<?> c = Class.forName(args[0]);
+		    Object t = c.newInstance();
+		    Method[] allMethods = c.getDeclaredMethods();
+		    for (Method m : allMethods) {
+				String mname = m.getName();
+				if (!mname.startsWith("test")
+				    || (m.getGenericReturnType() != boolean.class)) {
+					continue;
+				}
+		 		Type[] pType = m.getGenericParameterTypes();
+		 		if ((pType.length != 1)
+				    || Locale.class.isAssignableFrom(pType[0].getClass())) {
+		 		    continue;
+		 		}
+		
+				out.format("invoking %s()%n", mname);
+				try {
+				    m.setAccessible(true);
+				    Object o = m.invoke(t, new Locale(args[1], args[2], args[3]));
+				    out.format("%s() returned %b%n", mname, (Boolean) o);
+		
+				// Handle any exceptions thrown by method to be invoked.
+				} catch (InvocationTargetException x) {
+				    Throwable cause = x.getCause();
+				    err.format("invocation of %s failed: %s%n",
+					       mname, cause.getMessage());
+					}
+		    }
+		        // production code should handle these exceptions more gracefully
+			} catch (ClassNotFoundException x) {
+			    x.printStackTrace();
+			} catch (InstantiationException x) {
+			    x.printStackTrace();
+			} catch (IllegalAccessException x) {
+			    x.printStackTrace();
+			}
+		    }
+}
+```
