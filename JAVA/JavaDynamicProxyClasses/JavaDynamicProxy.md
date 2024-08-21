@@ -86,7 +86,7 @@
    - 예를 들어, `MyService`라는 인터페이스가 있고, `MyServiceImpl`이라는 클래스가 이를 구현한다고 가정합시다. 이때, `MyServiceImpl`이 바로 타겟 클래스입니다.
 
 2. **InvocationHandler**: 
-    지난번에 설명한 InvocationHandler 를 참조해주세요. ![ling](./0819.md)  
+    InvocationHandler 글을 참조해주세요. ![link](./InvocationHandler.md)  
    - 다이나믹 프록시의 핵심은 `InvocationHandler` 인터페이스를 구현하는 클래스입니다. 이 클래스는 모든 메서드 호출을 가로채고, 그 호출을 `invoke` 메서드로 전달합니다.
    - `invoke` 메서드는 세 개의 매개변수를 받습니다: 
      - `proxy`: 현재 다이나믹 프록시 객체.
