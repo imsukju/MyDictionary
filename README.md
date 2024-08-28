@@ -3,9 +3,6 @@
 그 외 다른 폴더는 위를 바탕으로 제 기준대로 다시 정리를 해놓았습니다.  
 그날 공부한것을 **2024_Memo** 폴더에 넣지 않고 바로 그외의 폴더에 넣어놓을때도 있습니다.  
 
-
-[](/Spring/AopAllience/JavaDynamicProxyClasses/)
-
 # 목차
 
 <details>
