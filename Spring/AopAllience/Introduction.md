@@ -24,45 +24,8 @@ AOP(Aspect-Oriented Programming)의 "Introduction Advice"는 특정 클래스나
     - AOP 프레임워크는 Introduction Advice를 통해 대상 클래스에 새로운 메서드와 인터페이스를 추가하는 역할을 합니다. 이는 주로 프록시 패턴을 통해 구현되며, 프록시는 타겟 클래스를 감싸고 그 클래스의 메서드 호출을 가로채어 필요한 새로운 기능을 제공합니다. 
     클라이언트 코드에서는 이러한 변화가 투명하게 처리되며, 실제로는 수정된 기능을 사용하는 것입니다.
 
-### 예시
 
-다음은 Introduction Advice의 일반적인 사용 예시입니다.
-
-```java
-public interface Auditable {
-    void setAuditInfo(String info);
-    String getAuditInfo();
-}
-```
-
-위와 같은 `Auditable` 인터페이스가 있다고 가정할 때, 특정 클래스가 이를 구현하지 않았다고 해도, Introduction Advice를 통해 해당 클래스가 런타임에 이 인터페이스를 구현하게 할 수 있습니다.
-
-```java
-@Aspect
-public class AuditableIntroduction {
-    
-    @DeclareParents(value="com.example.SomeClass+", defaultImpl=DefaultAuditable.class)
-    public static Auditable mixin;
-
-    public static class DefaultAuditable implements Auditable {
-        private String auditInfo;
-
-        @Override
-        public void setAuditInfo(String info) {
-            this.auditInfo = info;
-        }
-
-        @Override
-        public String getAuditInfo() {
-            return this.auditInfo;
-        }
-    }
-}
-```
-
-위 코드에서는 `SomeClass`가 `Auditable` 인터페이스를 구현하지 않았더라도, Introduction Advice를 사용하여 `SomeClass`가 `Auditable` 인터페이스를 구현하도록 만들 수 있습니다. 이렇게 되면 `SomeClass`의 객체는 런타임에 `Auditable` 인터페이스의 메서드도 사용할 수 있게 됩니다.
-
-### 장점
+###  Introduction Advice 장점
 
 1. **유연성(Flexibility)**:
     - Introduction Advice는 코드의 구조를 변경하지 않고도 새로운 기능을 추가할 수 있게 해줍니다. 이는 특히 다양한 클래스에 공통된 기능을 추가해야 할 때 매우 유용합니다.
@@ -79,118 +42,6 @@ public class AuditableIntroduction {
 
 
 
-### IntroductionAdvisor: 도입의 정의와 관리
-
-**IntroductionAdvisor**는 `Introduction` 기능을 관리하며, 특정 객체에 어떤 인터페이스를 추가할지, 이를 어떤 클래스에 적용할지를 결정합니다. 또한, 도입할 인터페이스의 유효성을 검사하여, 설정 오류를 방지하고 도입이 예상대로 작동하도록 보장합니다.
-
-#### 주요 역할
-
-1. **도입할 인터페이스 정의**:
-   - **getInterfaces() 메서드**: 이 메서드는 타겟 객체에 추가할 인터페이스를 지정합니다. 예를 들어, 특정 객체에 `Auditable` 인터페이스를 추가하려면, 이 메서드를 통해 `Auditable` 인터페이스가 반환됩니다.
-
-2. **타겟 클래스 필터링**:
-   - **getClassFilter() 메서드**: 이 메서드는 Introduction이 적용될 대상 클래스를 필터링하는 역할을 합니다. 예를 들어, 특정 패키지에 속한 클래스에만 도입을 적용하고자 할 때, 이 메서드를 사용해 해당 패키지에 속한 클래스만 필터링할 수 있습니다.
-
-3. **인터페이스 유효성 검사**:
-   - **validateInterfaces() 메서드**: 이 메서드는 도입할 인터페이스가 실제로 해당 클래스에서 구현될 수 있는지를 검증합니다. 이는 설정 오류를 방지하고 시스템의 안정성을 높이는 중요한 단계입니다.
-
-### IntroductionInterceptor: 도입된 인터페이스의 실행 관리
-
-**IntroductionInterceptor**는 `IntroductionAdvisor`와 함께 작동하며, 도입된 인터페이스의 메서드 호출을 가로채고 처리하는 역할을 합니다. 이를 통해, 프록시 객체는 도입된 인터페이스의 메서드를 구현한 것처럼 동작할 수 있습니다. [1^]:
-
-#### 주요 역할
-
-1. **메서드 호출 가로채기**:
-   - **invoke() 메서드**: 도입된 인터페이스의 메서드가 호출되면, `IntroductionInterceptor`는 이 호출을 가로채고 적절히 처리합니다. 예를 들어, `Auditable` 인터페이스가 도입된 객체에서 `setAuditInfo()` 메서드를 호출하면, 이 호출은 `invoke()` 메서드에 의해 처리됩니다.
-
-2. **도입된 인터페이스 구현**:
-   - `IntroductionInterceptor`는 도입된 인터페이스의 메서드를 실제로 구현하거나, 필요한 경우 delegate 객체를 통해 이 작업을 수행합니다. 이를 통해 도입된 인터페이스가 예상대로 작동하도록 보장합니다.
-
-3. **원하지 않는 인터페이스 억제**:
-   - **suppressInterface(Class intf) 메서드**: delegate 객체가 구현했지만, AOP 프록시에 노출되지 말아야 할 인터페이스를 억제할 수 있습니다. 이를 통해 노출할 인터페이스를 제어할 수 있습니다.
-
-> ####  프록시 객체:
->    - 프록시 객체는 원래의 비즈니스 객체를 감싸는 객체로, `IntroductionAdvisor`와 `IntroductionInterceptor`를 통해 새로운 인터페이스와 메소드를 제공합니다.
-
-
-
-### 동작 방식
-
-1. **인터페이스 정의**:
-   - 새로운 인터페이스를 정의합니다. 예를 들어, `Lockable`이라는 인터페이스가 있다고 가정합니다.
-     ```java
-     public interface Lockable {
-         void lock();
-         void unlock();
-     }
-     ```
-
-2. **`IntroductionAdvisor` 구현**:
-   - `IntroductionAdvisor`를 구현하여 프록시가 새로운 인터페이스를 추가할 수 있도록 합니다. `IntroductionAdvisor`는 두 가지 주요 구성 요소를 포함합니다:
-     - **Advice**: 메소드 호출의 처리를 정의합니다. (예: `LockMixin`이 이 역할을 담당)
-     - **Interfaces**: 프록시가 구현할 인터페이스를 지정합니다.
-   
-   ```java
-   public class LockMixinAdvisor extends IntroductionAdvisorSupport {
-       public LockMixinAdvisor() {
-           super(new LockMixin(), Lockable.class);
-       }
-   }
-   ```
-
-   - `LockMixin`은 `Lockable` 인터페이스의 메소드를 실제로 구현하는 클래스입니다.
-     ```java
-     public class LockMixin implements Lockable {
-         @Override
-         public void lock() {
-             // lock implementation
-         }
-
-         @Override
-         public void unlock() {
-             // unlock implementation
-         }
-     }
-     ```
->[1^]:
-> ### `IntroductionInterceptor`의 역할
->
->`IntroductionInterceptor`는 프록시가 호출된 메소드를 어떻게 처리할지 정의하는 인터셉터입니다. 
->
->- **`LockMixin`**: `LockMixin`은 `Lockable` 인터페이스를 구현하는 클래스입니다. 이 클래스는 `Lockable` 인터페이스의 메소드를 실제로 구현합니다.
-
-
-3. **프록시 생성**:
-   - `ProxyFactory`를 사용하여 프록시를 생성하고, `IntroductionAdvisor`를 추가합니다.
-   ```java
-   ProxyFactory factory = new ProxyFactory(new MyTargetClass());
-   factory.addAdvisor(new LockMixinAdvisor());
-   factory.setProxyTargetClass(true);
-   MyTargetClass proxy = (MyTargetClass) factory.getProxy();
-   ```
-
-4. **프록시 사용**:
-   - 프록시 객체는 `Lockable` 인터페이스를 구현하는 것처럼 동작합니다. 이를 통해 원래의 `MyTargetClass` 객체는 `Lockable` 인터페이스를 직접 구현하지 않았더라도, 프록시를 통해 `Lockable`의 메소드에 접근할 수 있습니다.
-
-### 예시
-
-```java
-public class MyTargetClass {
-    // 기존 비즈니스 로직
-}
-
-// 프록시 객체
-MyTargetClass proxy = (MyTargetClass) factory.getProxy();
-Lockable lockable = (Lockable) proxy; // 프록시가 Lockable 인터페이스를 구현하므로 캐스팅 가능
-lockable.lock(); // 실제 LockMixin의 lock() 메소드가 호출됨
-```
-
-### 요약
-
-`Introduction`은 Spring AOP의 강력한 기능으로, 기존 비즈니스 객체에 새로운 인터페이스와 메소드를 동적으로 추가할 수 있게 해줍니다. 이를 통해 코드 변경 없이도 기능을 확장하고, 비즈니스 로직과 부가 기능을 분리하여 유지보수성과 확장성을 높일 수 있습니다.
-
-
-
 ### MethodInterceptor와 Introduction의 관계
 
 AOP에서 **MethodInterceptor**는 메서드 호출을 가로채서 추가적인 로직을 실행할 수 있는 기능을 제공합니다. Spring AOP에서 **MethodInterceptor**의 `invoke()` 메서드를 통해 Introduction을 구현할 수 있습니다.
@@ -199,23 +50,39 @@ AOP에서 **MethodInterceptor**는 메서드 호출을 가로채서 추가적인
 
 ### IntroductionAdvisor와 IntroductionInterceptor
 
-**IntroductionAdvisor**와 **IntroductionInterceptor**는 Introduction 기능을 구현하고 관리하는 핵심적인 역할을 합니다.
+**`IntroductionAdvisor`**와 **`IntroductionInterceptor`**는 Introduction 기능을 구현하고 관리하는 핵심적인 역할을 합니다.
+
+문장은 전반적으로 잘 구성되어 있지만, 몇 가지 문장 표현을 더 명확하게 다듬고, 일부 내용을 추가 설명하여 보완할 수 있습니다. 아래는 수정 및 보완된 버전입니다:
 
 #### IntroductionAdvisor의 역할
 
-**IntroductionAdvisor**는 특정 클래스에 Introduction을 적용하기 위한 설정을 제공합니다. 이 설정에는 어떤 인터페이스를 도입할지, 그리고 도입된 인터페이스가 올바르게 설정되었는지를 확인하는 기능이 포함됩니다.
+**IntroductionAdvisor**는 특정 클래스에 `Introduction`을 적용하기 위한 설정을 제공합니다. 이 클래스는 `Introduction` 기능을 관리하며, 특정 객체에 어떤 인터페이스를 추가할지, 그리고 이를 어떤 클래스에 적용할지를 결정합니다. 또한, 도입할 인터페이스의 유효성을 검사하여, 설정 오류를 방지하고 도입이 예상대로 작동하도록 보장합니다.
 
-1. **`getClassFilter()`**: 이 메서드는 어떤 클래스에 Introduction을 적용할지를 결정합니다. 필터를 통해 특정 클래스만 선택적으로 도입할 수 있습니다.
+### 주요 역할:
 
-2. **`validateInterfaces()`**: 이 메서드는 도입하려는 인터페이스가 설정된 `IntroductionInterceptor`에서 올바르게 구현될 수 있는지를 검사합니다. 이 검사는 설정 오류를 방지하는 데 중요합니다.
+1. **도입할 인터페이스 정의**:
+   - **getInterfaces() 메서드**: 이 메서드는 타겟 객체에 추가할 인터페이스를 지정합니다. 예를 들어, 특정 객체에 `Auditable` 인터페이스를 추가하려면, 이 메서드는 `Auditable` 인터페이스를 반환합니다. 이 메서드를 통해 도입할 인터페이스를 명시적으로 정의할 수 있습니다.
 
-3. **`getInterfaces()`**: 이 메서드는 도입된 인터페이스의 목록을 반환합니다. 예를 들어, `Lockable`이라는 인터페이스가 도입되었다면, 이 메서드는 `Lockable`을 반환합니다.
+2. **타겟 클래스 필터링**:
+   - **getClassFilter() 메서드**: 이 메서드는 `Introduction`이 적용될 대상 클래스를 필터링하는 역할을 합니다. 예를 들어, 특정 패키지에 속한 클래스에만 도입을 적용하고자 할 때, 이 메서드를 사용하여 해당 패키지에 속한 클래스만 필터링할 수 있습니다. 이를 통해 특정 조건을 만족하는 클래스에만 인터페이스 도입이 적용되도록 제어할 수 있습니다.
+
+3. **인터페이스 유효성 검사**:
+   - **validateInterfaces() 메서드**: 이 메서드는 도입할 인터페이스가 실제로 대상 클래스에서 구현될 수 있는지를 검증합니다. 이는 설정 오류를 방지하고, 시스템의 안정성을 높이는 중요한 단계입니다. 예를 들어, 도입하려는 인터페이스가 특정 클래스에서 충돌 없이 구현될 수 있는지, 또는 도입이 필요한 환경을 갖추고 있는지를 확인합니다.
 
 #### IntroductionInterceptor의 역할
 
-**IntroductionInterceptor**는 도입된 인터페이스의 실제 동작을 처리합니다. Spring AOP에서는 이 기능을 쉽게 구현할 수 있도록 **DelegatingIntroductionInterceptor**라는 클래스를 제공합니다.
+`IntroductionInterceptor`는 도입된 인터페이스의 실제 동작을 처리하는 핵심 구성 요소입니다. Spring AOP에서는 이 기능을 손쉽게 구현할 수 있도록 **DelegatingIntroductionInterceptor**라는 클래스를 제공합니다. 이 클래스는 도입된 인터페이스의 메서드 호출을 다른 객체(Delegate)에게 위임함으로써, 인터페이스 도입과 메서드 호출 처리 과정을 간소화합니다.
 
-- **DelegatingIntroductionInterceptor**는 도입된 인터페이스의 메서드 호출을 다른 객체(Delegate)에게 위임합니다. 이를 통해 인터페이스 도입과 메서드 호출 처리가 더욱 간단해집니다.
+1. **메서드 호출 가로채기**:
+   - **invoke() 메서드**: 도입된 인터페이스의 메서드가 호출되면, `IntroductionInterceptor`는 이 호출을 가로채고 적절히 처리합니다. 예를 들어, `Auditable` 인터페이스가 도입된 객체에서 `setAuditInfo()` 메서드가 호출되면, 이 호출은 `invoke()` 메서드에 의해 가로채어지고 처리됩니다. 이는 메서드 호출에 대한 추가적인 로직을 주입할 수 있는 중요한 지점입니다.
+
+2. **도입된 인터페이스 구현**:
+   - `IntroductionInterceptor`는 도입된 인터페이스의 메서드를 실제로 구현하거나, 필요한 경우 delegate 객체를 통해 이 작업을 수행합니다. 이를 통해 도입된 인터페이스가 예상대로 작동하도록 보장합니다. 만약 원래의 객체가 도입된 인터페이스의 메서드를 지원하지 않는 경우, 이 인터셉터는 해당 메서드 호출을 delegate에게 위임하여 처리할 수 있습니다.
+
+3. **원하지 않는 인터페이스 억제**:
+   - **suppressInterface(Class intf) 메서드**: delegate 객체가 구현했지만, AOP 프록시에 노출되지 말아야 할 인터페이스를 억제할 수 있습니다. 이를 통해 노출할 인터페이스를 세밀하게 제어할 수 있으며, 보안상 또는 디자인상 노출을 제한하고자 하는 인터페이스를 숨길 수 있습니다.
+
+
 
 ### 실제 사례: Lockable 인터페이스 도입
 
@@ -236,15 +103,109 @@ AOP에서 **MethodInterceptor**는 메서드 호출을 가로채서 추가적인
    - `locked` 상태 변수는 객체의 잠금 상태를 관리합니다.
    - `invoke()` 메서드는 메서드 호출을 가로채고, 잠겨 있는 동안 `set` 메서드가 호출되면 예외를 발생시킵니다.
 
+
+    ```java
+    public class LockMixin extends DelegatingIntroductionInterceptor implements Lockable {
+
+        private boolean locked;
+
+        @Override
+        public void lock() {
+            this.locked = true;
+        }
+
+        @Override
+        public void unlock() {
+            this.locked = false;
+        }
+
+        @Override
+        public boolean locked() {
+            return this.locked;
+        }
+
+        // `invoke()` 메서드는 메서드 호출을 가로채고, 잠겨 있는 동안 `set` 메서드가 호출되면 예외를 발생시킵니다.
+        @Override
+        public Object invoke(MethodInvocation invocation) throws Throwable {
+            // `IntroductionInterceptor` 역할: 도입된 인터페이스의 메서드 호출을 처리
+            if (locked() && invocation.getMethod().getName().startsWith("set")) {
+                // 객체가 잠겨 있을 때 `set` 메서드가 호출되면 `LockedException`을 발생시킵니다.
+                throw new LockedException();
+            }
+            // `invocation.proceed()` -> 원래 객체(target class)의 메서드에 호출을 위임합니다.
+            return super.invoke(invocation);
+        }
+
+    }
+    ```
+     
+
+
 3. **LockMixinAdvisor 클래스**: `LockMixin`을 사용하여 `Lockable` 인터페이스를 도입하는 설정을 제공합니다. 이 어드바이저는 별도의 설정이 필요 없으며, 각 객체에 맞는 인스턴스를 관리합니다.
+    ```java
+    public class LockMixinAdvisor extends DefaultIntroductionAdvisor {
+        public LockMixinAdvisor() {
+            // LockMixin이 IntroductionInterceptor 역할을 하고,
+            // Lockable 인터페이스가 대상 클래스에 도입되도록 설정합니다.
+            super(new LockMixin(), Lockable.class);
+        }
+    }
+    // **`DefaultIntroductionAdvisor`**: 이 클래스는 `IntroductionAdvisor`의 기본 구현체로, 
+    // 특정 인터페이스를 프록시에 추가할 수 있도록 지원합니다.
 
-### Introduction의 실제 동작
+    // **`LockMixin`**: 이 객체는 `DelegatingIntroductionInterceptor`를 통해 `IntroductionInterceptor` 역할을 구현합니다. 
+    // `IntroductionInterceptor`는 메서드 호출 시 추가적인 작업을 수행하는 코드입니다.
 
-Introduction은 AOP의 주요 기능으로, 객체에 새로운 기능을 동적으로 추가할 수 있습니다. 이 기능을 통해 다음과 같은 이점이 있습니다:
+    // **`Lockable.class`**: 이 클래스는 프록시가 `Lockable` 인터페이스를 구현하도록 지시합니다.
+    // Introduction 기능을 통해 프록시 객체에 새로운 인터페이스를 도입할 수 있습니다.
+    ```
 
-- **기능 확장**: 기존의 비즈니스 로직을 변경하지 않고도 새로운 기능을 객체에 추가할 수 있습니다.
-- **코드 모듈화**: 핵심 비즈니스 로직과 추가적인 기능을 분리하여 코드의 유지보수성과 재사용성을 높일 수 있습니다.
-- **객체의 동적 확장**: 런타임에 객체의 기능을 동적으로 확장할 수 있어, 보다 유연한 소프트웨어 설계가 가능합니다.
+- **`DefaultIntroductionAdvisor`**: 이 클래스는 `IntroductionAdvisor`의 기본 구현체로, 특정 인터페이스를 프록시에 추가할 수 있도록 지원합니다.
+- **`LockMixin`**: 이 객체는 `Advice`를 구현합니다. `Advice`는 메서드 호출 시 추가적인 작업을 수행하는 코드입니다.
+- **`Lockable.class`**: 이 클래스는 프록시가 `Lockable` 인터페이스를 구현하도록 지시합니다.
+
+이 생성자는 `LockMixinAdvisor`가 `Lockable` 인터페이스를 프록시 객체에 적용하도록 설정합니다.
+
+
+### 4. 프록시 객체의 타입
+
+- **프록시와 인터페이스**: `ProxyFactory`는 `LockMixinAdvisor`를 사용하여 `MyTargetClass`의 프록시를 생성합니다. `LockMixinAdvisor`에 의해 `Lockable` 인터페이스가 프록시에 추가됩니다. 따라서 생성된 프록시는 `Lockable` 인터페이스를 구현하게 됩니다.
+- **`getProxy()`**: 프록시 객체를 반환합니다. 이 프록시 객체는 원래의 `MyTargetClass` 객체를 감싸며, `Lockable` 인터페이스를 구현합니다.
+
+`ProxyFactory`를 사용한 프록시 생성
+```java
+@Bean
+public MyTargetClass myTargetClass(LockMixinAdvisor lockMixinAdvisor) {
+    ProxyFactory factory = new ProxyFactory(new MyTargetClass());
+    factory.addAdvisor(lockMixinAdvisor); // LockMixinAdvisor를 프록시에 추가하여 Lockable 인터페이스를 도입합니다.
+    factory.setProxyTargetClass(true);  // CGLIB를 사용하여 프록시 생성 (기본 클래스의 모든 메서드를 프록시화)
+    MyTargetClass proxy = (MyTargetClass) factory.getProxy();
+
+    // 프록시 객체의 타입 확인
+    if (proxy instanceof Lockable) {
+        System.out.println("프록시 객체는 Lockable 인터페이스를 구현합니다.");
+    } else {
+        System.out.println("프록시 객체는 Lockable 인터페이스를 구현하지 않습니다.");
+    }
+
+    return proxy;
+}
+```
+
+- **`ProxyFactory`**: Spring의 AOP 프레임워크에서 제공하는 클래스입니다. 프록시 객체를 생성할 때 사용합니다.
+- **`addAdvisor(lockMixinAdvisor)`**: 프록시에 `LockMixinAdvisor`를 추가합니다. 이 어드바이저는 `LockMixin`을 `Advice`로 사용하고, `Lockable` 인터페이스를 프록시에 추가합니다.
+- **`setProxyTargetClass(true)`**: CGLIB를 사용하여 프록시를 생성합니다. 이는 `MyTargetClass`의 서브클래스를 생성하여 메서드 호출을 가로챕니다.
+
+### 5. 타입 캐스팅 가능성
+
+- **프록시 객체와 `Lockable` 인터페이스**: 생성된 프록시 객체는 `Lockable` 인터페이스를 구현하므로, `Lockable` 타입으로 캐스팅할 수 있습니다. 이는 `LockMixinAdvisor`가 `Lockable` 인터페이스를 프록시에 적용했기 때문입니다.
+- **프록시의 타입**: 프록시는 `MyTargetClass`의 서브클래스로 생성되며, `Lockable` 인터페이스를 구현합니다. 이로 인해 프록시 객체는 `Lockable` 타입으로 캐스팅할 수 있습니다.
+
+### 요약
+
+1. **`LockMixinAdvisor`**: `DefaultIntroductionAdvisor`를 상속받아 `Lockable` 인터페이스를 프록시에 추가합니다.
+2. **프록시 생성**: `ProxyFactory`를 사용하여 `MyTargetClass`의 프록시를 생성하며, `LockMixinAdvisor`를 통해 `Lockable` 인터페이스를 프록시에 적용합니다.
+3. **캐스팅 가능**: 생성된 프록시 객체는 `Lockable` 인터페이스를 구현하므로 `Lockable` 타입으로 캐스팅할 수 있습니다.
 
 ### 결론
 
