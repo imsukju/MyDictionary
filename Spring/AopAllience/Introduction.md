@@ -1,10 +1,10 @@
 Spring AOP에서 `Introduction`은 기존 객체에 새로운 인터페이스와 메소드를 동적으로 추가하는 기능을 말합니다. 이는 AOP의 핵심 기능 중 하나로, 기존 클래스나 객체에 대해 런타임에서 추가적인 기능을 구현할 수 있도록 합니다. 
 
-### `Introduction`의 정의 ###
+### `Introduction`의 정의
 
 `Introduction`은 Spring AOP의 `IntroductionAdvisor`를 통해 구현되며, 특정 인터페이스를 프록시 객체에 추가하는 방식으로 동작합니다. 이 방식은 기존 객체의 코드나 디자인을 변경하지 않고도 새로운 기능을 추가할 수 있게 해줍니다.
 
-## Introduction Advice
+### Introduction Advice
 AOP(Aspect-Oriented Programming)의 "Introduction Advice"는 특정 클래스나 객체에 새로운 메서드나 필드(속성)를 추가하기 위한 기능입니다. 이는 AOP의 주요 기능 중 하나로, 기존의 코드에 수정 없이 새로운 기능을 주입할 수 있게 해줍니다. 이를 통해 코드의 재사용성을 높이고, 중복을 줄이며, 특정 관심사를 모듈화하는 데 큰 도움이 됩니다.
 ### Introduction Advice의 주요 개념
 
