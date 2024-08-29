@@ -5,7 +5,8 @@ Spring AOP에서 `Introduction`은 기존 객체에 새로운 인터페이스와
 `Introduction`은 Spring AOP의 `IntroductionAdvisor`를 통해 구현되며, 특정 인터페이스를 프록시 객체에 추가하는 방식으로 동작합니다. 이 방식은 기존 객체의 코드나 디자인을 변경하지 않고도 새로운 기능을 추가할 수 있게 해줍니다.
 
 ### Introduction Advice
-AOP(Aspect-Oriented Programming)의 "Introduction Advice"는 특정 클래스나 객체에 새로운 메서드나 필드(속성)를 추가하기 위한 기능입니다. 이는 AOP의 주요 기능 중 하나로, 기존의 코드에 수정 없이 새로운 기능을 주입할 수 있게 해줍니다. 이를 통해 코드의 재사용성을 높이고, 중복을 줄이며, 특정 관심사를 모듈화하는 데 큰 도움이 됩니다.
+AOP(Aspect-Oriented Programming)의 "Introduction Advice"는 **특정 클래스나 객체에 새로운 메서드나 필드(속성)를 추가하기 위한 기능입니다.** 
+이는 AOP의 주요 기능 중 하나로, 기존의 코드에 수정 없이 새로운 기능을 주입할 수 있게 해줍니다. 이를 통해 코드의 재사용성을 높이고, 중복을 줄이며, 특정 관심사를 모듈화하는 데 큰 도움이 됩니다.
 ### Introduction Advice의 주요 개념
 
 1. **관심사의 분리(Separation of Concerns)**:
@@ -17,7 +18,7 @@ AOP(Aspect-Oriented Programming)의 "Introduction Advice"는 특정 클래스나
     타겟 클래스는 보통 특정 인터페이스를 구현하지 않는 기존 클래스이지만, Introduction Advice를 통해 런타임에 그 인터페이스를 구현하도록 만들어질 수 있습니다.
 
 3. **인터페이스 구현(Implementing an Interface)**:
-    - Introduction Advice의 핵심은 기존 클래스에 새로운 인터페이스를 구현시키는 것입니다. 예를 들어, 기존 클래스가 `Auditable`이라는 인터페이스를 구현하지 않더라도, Introduction Advice를 사용하면 해당 클래스가 해당 인터페이스를 구현하도록 할 수 있습니다. 
+    - Introduction Advice의 핵심은 기존 클래스에 새로운 인터페이스를 구현시키는 것입니다. 예를 들어, 기존 클래스가 `Lockable`이라는 인터페이스를 구현하지 않더라도, Introduction Advice를 사용하면 해당 클래스가 해당 인터페이스를 구현하도록 할 수 있습니다. [1^]
     이는 클래스에 새로운 메서드와 필드를 추가하는 방식으로 이루어지며, 이러한 메서드와 필드는 런타임에 동적으로 제공됩니다.
 
 4. **AOP 프레임워크의 역할**:
@@ -52,13 +53,11 @@ AOP에서 **MethodInterceptor**는 메서드 호출을 가로채서 추가적인
 
 **`IntroductionAdvisor`**와 **`IntroductionInterceptor`**는 Introduction 기능을 구현하고 관리하는 핵심적인 역할을 합니다.
 
-문장은 전반적으로 잘 구성되어 있지만, 몇 가지 문장 표현을 더 명확하게 다듬고, 일부 내용을 추가 설명하여 보완할 수 있습니다. 아래는 수정 및 보완된 버전입니다:
-
 #### IntroductionAdvisor의 역할
 
 **IntroductionAdvisor**는 특정 클래스에 `Introduction`을 적용하기 위한 설정을 제공합니다. 이 클래스는 `Introduction` 기능을 관리하며, 특정 객체에 어떤 인터페이스를 추가할지, 그리고 이를 어떤 클래스에 적용할지를 결정합니다. 또한, 도입할 인터페이스의 유효성을 검사하여, 설정 오류를 방지하고 도입이 예상대로 작동하도록 보장합니다.
 
-### 주요 역할:
+### 주요 역할: 
 
 1. **도입할 인터페이스 정의**:
    - **getInterfaces() 메서드**: 이 메서드는 타겟 객체에 추가할 인터페이스를 지정합니다. 예를 들어, 특정 객체에 `Auditable` 인터페이스를 추가하려면, 이 메서드는 `Auditable` 인터페이스를 반환합니다. 이 메서드를 통해 도입할 인터페이스를 명시적으로 정의할 수 있습니다.
@@ -69,6 +68,7 @@ AOP에서 **MethodInterceptor**는 메서드 호출을 가로채서 추가적인
 3. **인터페이스 유효성 검사**:
    - **validateInterfaces() 메서드**: 이 메서드는 도입할 인터페이스가 실제로 대상 클래스에서 구현될 수 있는지를 검증합니다. 이는 설정 오류를 방지하고, 시스템의 안정성을 높이는 중요한 단계입니다. 예를 들어, 도입하려는 인터페이스가 특정 클래스에서 충돌 없이 구현될 수 있는지, 또는 도입이 필요한 환경을 갖추고 있는지를 확인합니다.
 
+>
 #### IntroductionInterceptor의 역할
 
 `IntroductionInterceptor`는 도입된 인터페이스의 실제 동작을 처리하는 핵심 구성 요소입니다. Spring AOP에서는 이 기능을 손쉽게 구현할 수 있도록 **DelegatingIntroductionInterceptor**라는 클래스를 제공합니다. 이 클래스는 도입된 인터페이스의 메서드 호출을 다른 객체(Delegate)에게 위임함으로써, 인터페이스 도입과 메서드 호출 처리 과정을 간소화합니다.
@@ -83,7 +83,7 @@ AOP에서 **MethodInterceptor**는 메서드 호출을 가로채서 추가적인
    - **suppressInterface(Class intf) 메서드**: delegate 객체가 구현했지만, AOP 프록시에 노출되지 말아야 할 인터페이스를 억제할 수 있습니다. 이를 통해 노출할 인터페이스를 세밀하게 제어할 수 있으며, 보안상 또는 디자인상 노출을 제한하고자 하는 인터페이스를 숨길 수 있습니다.
 
 
-
+[1^]:
 ### 실제 사례: Lockable 인터페이스 도입
 
 여기서는 `Lockable`이라는 인터페이스를 도입하여 객체가 잠금 기능을 가지도록 하는 예를 들어보겠습니다.

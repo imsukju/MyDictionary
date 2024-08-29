@@ -61,15 +61,120 @@ public interface ClassFilter {
 
 Spring AOP에서 메서드 매칭은 크게 두 가지 방식으로 이루어질 수 있습니다: 정적 매칭과 런타임 매칭입니다.
 
-#### 정적 매칭 (Static Matching)
-- **설명**: AOP 프록시가 생성될 때 수행되는 매칭입니다. 즉, 애플리케이션이 시작되거나 빈이 초기화될 때 특정 메서드가 포인트컷에 일치하는지 미리 결정됩니다.
-- **장점**: 메서드 호출 시마다 매칭을 수행할 필요가 없기 때문에 성능이 더 좋습니다. `matches(Method m, Class<?> targetClass)` 메서드에서 매칭이 수행되고, 그 결과는 캐시됩니다.
-- **적용 사례**: 메서드 이름이나 메서드가 속한 클래스와 같은 고정된 특성에 따라 어드바이스를 적용할 때 사용됩니다.
+스프링 AOP(Aspect-Oriented Programming)에서는 포인트컷(Pointcut) 표현식을 사용하여 어떤 메서드에 어드바이스(Advice)를 적용할지를 결정합니다. 포인트컷 표현식의 평가 시점에 따라 **정적 매칭(Static Matching)**과 **런타임 매칭(Runtime Matching)**으로 나눌 수 있습니다. 이 두 가지 매칭 방식은 스프링 AOP의 동작 방식을 이해하는 데 중요한 개념입니다.
 
-#### 런타임 매칭 (Runtime Matching)
-- **설명**: 메서드가 호출될 때마다 아규먼트 값과 같은 동적인 특성을 기반으로 매칭을 수행합니다. 이 경우, 매 호출 시마다 `matches(Method m, Class<?> targetClass, Object... args)` 메서드가 실행됩니다.
-- **단점**: 매번 매칭이 수행되므로, 성능에 부정적인 영향을 미칠 수 있습니다.
-- **적용 사례**: 특정 아규먼트 값에 따라 어드바이스 적용 여부를 동적으로 결정해야 할 때 사용됩니다. 예를 들어, 메서드 아규먼트가 특정 값일 때만 로깅을 수행하도록 하는 경우가 있습니다.
+#Spring AOP에서 정적 매칭과 런타임 매칭의 차이를 이해하기 위해 간단한 예제 코드를 살펴보겠습니다.
+
+### 1. 정적 매칭 예제
+
+먼저, 정적 매칭의 예제를 살펴보겠습니다. 여기서 `execution` 포인트컷 표현식을 사용하여 특정 메서드 패턴에 매칭하는 방식입니다.
+
+#### 예제 코드:
+
+```java
+// Service 클래스
+package com.example.service;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class MyService {
+    public void performTask() {
+        System.out.println("Performing task...");
+    }
+
+    public void performAnotherTask() {
+        System.out.println("Performing another task...");
+    }
+}
+
+// Aspect 클래스
+package com.example.aspect;
+
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.springframework.stereotype.Component;
+
+@Aspect
+@Component
+public class MyAspect {
+
+    // execution 포인트컷: com.example.service 패키지의 모든 메서드에 적용
+    @Before("execution(* com.example.service.*.*(..))")
+    public void beforeAdvice() {
+        System.out.println("Before method execution - static matching");
+    }
+}
+```
+
+#### 설명:
+- **정적 매칭:** `execution(* com.example.service.*.*(..))` 포인트컷 표현식은 `com.example.service` 패키지 내의 모든 메서드에 적용됩니다. 이 매칭은 애플리케이션이 시작될 때 결정됩니다.
+- `MyService` 클래스의 모든 메서드(`performTask`, `performAnotherTask`)는 이 `Aspect`가 적용됩니다. 즉, 이 메서드들이 호출될 때마다 `beforeAdvice` 메서드가 먼저 실행됩니다.
+- 이 방식은 메서드의 이름이나 시그니처 등 정적인 정보를 기반으로 필터링됩니다.
+
+### 2. 런타임 매칭 예제
+
+이번에는 런타임 매칭의 예제를 살펴보겠습니다. 여기서는 `@annotation` 포인트컷 표현식을 사용하여 메서드에 특정 어노테이션이 존재하는지를 기준으로 AOP를 적용합니다.
+
+#### 예제 코드:
+
+```java
+// Service 클래스
+package com.example.service;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class MyService {
+
+    @MyCustomAnnotation
+    public void performTask() {
+        System.out.println("Performing task...");
+    }
+
+    public void performAnotherTask() {
+        System.out.println("Performing another task...");
+    }
+}
+
+// Custom Annotation
+package com.example.annotation;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface MyCustomAnnotation {
+}
+
+// Aspect 클래스
+
+@Aspect
+@Component
+public class MyAspect {
+
+    // @annotation 포인트컷: MyCustomAnnotation 어노테이션이 있는 메서드에만 적용
+    @Before("@annotation(com.example.annotation.MyCustomAnnotation)")
+    public void beforeAdvice() {
+        System.out.println("Before method execution - runtime matching");
+    }
+}
+```
+
+#### 설명:
+- **런타임 매칭:** `@annotation(com.example.annotation.MyCustomAnnotation)` 포인트컷 표현식은 메서드에 `MyCustomAnnotation` 어노테이션이 붙어 있는지를 기준으로 AOP를 적용합니다. 
+- `performTask` 메서드에 `MyCustomAnnotation` 어노테이션이 붙어 있기 때문에, 이 메서드가 호출될 때만 `beforeAdvice` 메서드가 실행됩니다. 
+- 이 매칭은 메서드가 호출되는 시점에 어노테이션이 실제로 존재하는지를 검사하는 과정에서 런타임 매칭이 이루어집니다.
+
+### 요약
+- **정적 매칭:** 메서드의 시그니처나 클래스 타입과 같은 정적 정보에 기반하여 AOP가 적용됩니다. 애플리케이션 시작 시점에 대상이 결정됩니다.
+- **런타임 매칭:** 메서드의 실행 시점에서 동적으로 조건을 검사하여 AOP가 적용됩니다. 실행 중에 런타임 정보를 바탕으로 대상이 결정됩니다.
+
+이 두 가지 매칭 방식은 AOP를 적용하는 시점과 유연성에 차이가 있으며, 각각의 상황에 맞게 사용할 수 있습니다.
+
 
 ### 포인트컷 캐싱의 중요성
 
