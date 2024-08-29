@@ -15,12 +15,14 @@
     - [Dependency Injection](/Spring/Spring_IOC/DependencyInjection.md)
     - [Instantiation Bean](/Spring/Spring_IOC/Instantiation_Bean.md)
 - **AopAllience**
-    - [Aop1](/Spring/AopAllience/SpringAop/Aop1.md)
-    - [Aop2](/Spring/AopAllience/SpringAop/Aop2.md)
-    - [Introduction](/Spring/AopAllience/SpringAop/Introduction.md)
-    - [Pointcut_And_methodmatches](/Spring/AopAllience/Aspectj/Pointcut_And_methodmatches.md)
     - [델리게이트 정리](/Spring/AopAllience/델리게이트%20정리.md)
-    - [동적 바인딩과 정적 바인딩](/Spring/AopAllience/동적바인딩%20과%20정적바인딩.md)
+    - [동적 바인딩과 정적 바인딩](/Spring/AopAllience/동적바인딩%20과%20정적바인딩.md
+    - **SpringAop**
+        - [Aop1](/Spring/AopAllience/SpringAop/Aop1.md)
+        - [Aop2](/Spring/AopAllience/SpringAop/Aop2.md)
+        - [Introduction](/Spring/AopAllience/SpringAop/Introduction.md)
+    **Aspectj**
+        - [Pointcut_And_methodmatches](/Spring/AopAllience/Aspectj/Pointcut_And_methodmatches.md))
     - **Java Dynamin Classes**
         - [Criteria_For_The_ProxyTargetClass](/Spring/AopAllience/JavaDynamicProxyClasses/Criteria_For_The_ProxyTargetClass.md)
         - [InvocationHandler](/Spring/AopAllience/JavaDynamicProxyClasses/InvocationHandler.md)
