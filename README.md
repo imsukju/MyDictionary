@@ -8,6 +8,7 @@
 <details>
 <summary>1. Spring</summary>
 
+
 - **Spring IOC**
     - [IOC 1](/Spring/Spring_IOC/IOC.md)
     - [IOC 2](/Spring/Spring_IOC/IOC2.md) **미완성**
@@ -21,8 +22,10 @@
         - [Aop1](/Spring/AopAllience/SpringAop/Aop1.md)
         - [Aop2](/Spring/AopAllience/SpringAop/Aop2.md)
         - [Introduction](/Spring/AopAllience/SpringAop/Introduction.md)  
-    - **Aspectj**  
+    - **Aspectj** 
+         > AopAllienc 의 Aspectj 는 Spring 프레임워크를 사용하지 않아도 독립적으로 사용할 수 있지만, 스프링의 빈으로 AspectJ 애스펙트(Aspect)를 관리할 수 있어서 Spring part 에 함께 작성했습니다.  
         - [Pointcut_And_methodmatches](/Spring/AopAllience/Aspectj/Pointcut_And_methodmatches.md)
+        - [AspectJ Support1](Spring/AopAllience/Aspectj/AspectJ%20Support1.md)
     - **Java Dynamin Classes**
         - [Criteria_For_The_ProxyTargetClass](/Spring/AopAllience/JavaDynamicProxyClasses/Criteria_For_The_ProxyTargetClass.md)
         - [InvocationHandler](/Spring/AopAllience/JavaDynamicProxyClasses/InvocationHandler.md)
@@ -55,5 +58,5 @@
     - [Mockito](/TDD/Mockito/Mockito.md)
     - [Mockito 와 DynamicProxy의 차이](/TDD/Mockito/Mockito%20와%20Dynamic%20Proxy%20차이.md)
 
-> TDD 파티는 아직 공부중 입니다.
+> TDD 파트는 아직 공부중 입니다.
 </details>
