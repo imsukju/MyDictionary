@@ -22,6 +22,7 @@
         - [Aop1](/Spring/AopAllience/SpringAop/Aop1.md)
         - [Aop2](/Spring/AopAllience/SpringAop/Aop2.md)
         - [Introduction](/Spring/AopAllience/SpringAop/Introduction.md)  
+        - [Spring AOP에서의 프록시 메커니즘](/Spring/AopAllience/SpringAop/Spring%20AOP에서의%20프록시%20메커니즘.md)
     - **Aspectj** 
          > AopAllienc 의 Aspectj 는 Spring 프레임워크를 사용하지 않아도 독립적으로 사용할 수 있지만, 스프링의 빈으로 AspectJ 애스펙트(Aspect)를 관리할 수 있어서 Spring part 에 함께 작성했습니다.  
         - [Pointcut_And_methodmatches](/Spring/AopAllience/Aspectj/Pointcut_And_methodmatches.md)
@@ -31,6 +32,8 @@
         - [Spring AOP 및 AspectJ에서 다양한 포인트컷 표현식](Spring/AopAllience/Aspectj/Spring%20AOP%20및%20AspectJ에서%20다양한%20포인트컷%20표현식.md)
         - [Spring AOP와 AspectJ의 proceed() 메서드 동작 차이와 호환성 고려사항](Spring/AopAllience/Aspectj/Spring%20AOP와%20AspectJ의%20proceed()%20메서드%20동작%20차이와%20호환성%20고려사항.md)
         - [target vs within](Spring/AopAllience/Aspectj/target%20vs%20within.md)
+      
+
     - **Java Dynamin Classes**
         - [Criteria_For_The_ProxyTargetClass](/Spring/AopAllience/JavaDynamicProxyClasses/Criteria_For_The_ProxyTargetClass.md)
         - [InvocationHandler](/Spring/AopAllience/JavaDynamicProxyClasses/InvocationHandler.md)
@@ -39,6 +42,17 @@
         - [클래스 로딩과 관련된 제약조건](/Spring/AopAllience/JavaDynamicProxyClasses/클래스%20로딩과%20관련된%20제약조건.md)
 - **JDBC**
     - [Transaction](/Spring/JDBC/Transaction.md)
+
+
+</details>
+
+<details>
+<summary>JVM</summary>
+
+  - [Java Instrumentation API](/JVM/Java%20Instrumentation%20API.md)
+  - [Java Agent](/JVM/Java%20Agent.md)
+  - [Instrumentation API와AspectJ](/JVM/Instrumentation%20API와AspectJ.md)
+  - [Spring instrument library](/jvm/Spring%20instrument%20library.md)
 
 
 </details>
