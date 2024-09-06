@@ -41,7 +41,7 @@
         - [JavaDynamicProxy](/Spring/AopAllience/JavaDynamicProxyClasses/JavaDynamicProxy.md)
         - [Serialization AND Methods Duplicated in Multiple Proxy Interfaces](/Spring/AopAllience/JavaDynamicProxyClasses/Serialization%20AND%20Methods%20Duplicated%20in%20Multiple%20Proxy%20Interfaces.md)        
         - [클래스 로딩과 관련된 제약조건](/Spring/AopAllience/JavaDynamicProxyClasses/클래스%20로딩과%20관련된%20제약조건.md)
-- **JDBC**
+- **Data Access**
     - [Transaction](/Spring/JDBC/Transaction.md)
 
 
