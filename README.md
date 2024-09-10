@@ -42,7 +42,7 @@
         - [Serialization AND Methods Duplicated in Multiple Proxy Interfaces](/Spring/AopAllience/JavaDynamicProxyClasses/Serialization%20AND%20Methods%20Duplicated%20in%20Multiple%20Proxy%20Interfaces.md)        
         - [클래스 로딩과 관련된 제약조건](/Spring/AopAllience/JavaDynamicProxyClasses/클래스%20로딩과%20관련된%20제약조건.md)
 - **Data Access**
-    - [Transaction](/Spring/JDBC/Transaction.md)
+    - [Transaction](./Spring/Data%20Access/Transaction.md)
 
 
 </details>
@@ -70,6 +70,18 @@
 </details>
 
 <details>
+
+<summary>JPA</summary>
+
+- [1_엔티티와persis](./JPA/1_엔티티와persist.md)
+- [2_Persistence Context와 플러시 메커니즘](./JPA/2_Persistence%20Context와%20플러시%20메커니즘.md)
+- [3_엔티티%20매핑.md](./JPA/3_엔티티%20매핑.md)
+
+> TDD 파트는 아직 공부중 입니다.
+</details>
+
+
+<details>
 <summary>TDD</summary>
 
 - [TDD](/TDD/TDD.md)
@@ -78,5 +90,4 @@
     - [Mockito](/TDD/Mockito/Mockito.md)
     - [Mockito 와 DynamicProxy의 차이](/TDD/Mockito/Mockito%20와%20Dynamic%20Proxy%20차이.md)
 
-> TDD 파트는 아직 공부중 입니다.
 </details>

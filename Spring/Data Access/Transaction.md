@@ -5,6 +5,48 @@
 ### 트랜잭션의 주요 역할:
 
 1. **원자성(Atomicity)**: 트랜잭션 내의 모든 작업은 하나의 단위로 취급됩니다. 모든 작업이 성공하거나, 하나라도 실패하면 전체 트랜잭션이 롤백되어 모든 변경 사항이 무효화됩니다. 예를 들어, 은행 이체 작업에서 돈이 출금되었지만 입금이 실패하는 경우, 출금 작업도 롤백되어야 합니다.
+```java
+public class AtomicityExample {
+    public static void main(String[] args) {
+        String url = "jdbc:sqlite:example.db";
+
+        try (Connection conn = DriverManager.getConnection(url)) {
+            if (conn != null) {
+                conn.setAutoCommit(false); // 트랜잭션을 수동으로 관리
+
+                try (Statement stmt = conn.createStatement()) {
+                    // 계좌 테이블 생성 (존재하지 않으면)
+                    String createTableSQL = "CREATE TABLE IF NOT EXISTS accounts (id INTEGER PRIMARY KEY, balance INTEGER)";
+                    stmt.execute(createTableSQL);
+
+                    // 샘플 데이터 삽입 (기존에 존재하지 않으면)
+                    String insertDataSQL = "INSERT INTO accounts (balance) VALUES (1000), (1000)";
+                    stmt.execute(insertDataSQL);
+
+                    // 트랜잭션 시작
+                    String withdrawSQL = "UPDATE accounts SET balance = balance - 500 WHERE id = 1"; // 출금
+                    String depositSQL = "UPDATE accounts SET balance = balance + 500 WHERE id = 2";  // 입금
+
+                    stmt.executeUpdate(withdrawSQL);
+                    stmt.executeUpdate(depositSQL);
+
+                    // 트랜잭션 성공적으로 커밋
+                    conn.commit();
+                    System.out.println("트랜잭션 성공");
+                } catch (SQLException e) {
+                    // 예외 발생 시 롤백
+                    conn.rollback();
+                    System.out.println("트랜잭션 실패: " + e.getMessage());
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+}
+
+
+```
 
 2. **일관성(Consistency)**: 트랜잭션이 완료되면 데이터베이스는 일관된 상태를 유지해야 합니다. 이는 트랜잭션 전에 데이터베이스가 일관된 상태였다면, 트랜잭션 후에도 여전히 일관된 상태여야 함을 의미합니다.
 
