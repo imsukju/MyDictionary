@@ -77,6 +77,8 @@
 - [2_Persistence Context와 플러시 메커니즘](./JPA/2_Persistence%20Context와%20플러시%20메커니즘.md)
 - [3_엔티티%20매핑.md](./JPA/3_엔티티%20매핑.md)
 
+- **Tip**
+    - [즉시로딩vs지연로딩 실행차이](./JPA/Tip/Tip1_즉시로딩vs지연로딩%20실행차이.md)
 > TDD 파트는 아직 공부중 입니다.
 </details>
 
