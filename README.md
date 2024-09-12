@@ -81,7 +81,7 @@
 - **Tip**
     - [즉시로딩vs지연로딩 실행차이](./JPA/Tip/Tip1_즉시로딩vs지연로딩%20실행차이.md)
     - [연관관계 매핑 어노테이션 1](./JPA/Tip/Tip2_JPA%20연관관계%20매핑%20어노테이션1.md)
-
+    - [Persistent Fields vs Persistent Properties](./JPA/Tip/Persistent%20Fields%20vs%20Persistent%20Properties.md)
 </details>
 
 
