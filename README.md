@@ -67,7 +67,7 @@
 
 > 리플렉션 파트의 설명은 아직 준비가 되어있지 않습니다 빠르게 완성하겠습니다.
 
-</details>
+</details> 
 
 <details>
 
@@ -76,10 +76,12 @@
 - [1_엔티티와persis](./JPA/1_엔티티와persist.md)
 - [2_Persistence Context와 플러시 메커니즘](./JPA/2_Persistence%20Context와%20플러시%20메커니즘.md)
 - [3_엔티티%20매핑.md](./JPA/3_엔티티%20매핑.md)
+- [4_연관관계 매핑](./JPA/4_연관관계%20매핑.md)
 
 - **Tip**
     - [즉시로딩vs지연로딩 실행차이](./JPA/Tip/Tip1_즉시로딩vs지연로딩%20실행차이.md)
-> TDD 파트는 아직 공부중 입니다.
+    - [연관관계 매핑 어노테이션 1](./JPA/Tip/Tip2_JPA%20연관관계%20매핑%20어노테이션1.md)
+
 </details>
 
 
