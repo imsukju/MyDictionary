@@ -151,3 +151,62 @@ public class Member {
 - `fetch = FetchType.LAZY`: **Team**이 조회될 때 **Member** 리스트는 지연 로딩됩니다.
 - `cascade = CascadeType.ALL`: 팀과 관련된 모든 회원도 함께 저장/삭제됩니다.
 - `orphanRemoval = true`: **Member**가 **Team**과의 관계가 끊기면 자동으로 삭제됩니다.
+
+## @ManyToMany
+- **정의**: 다대다 관계를 나타냅니다. 즉, 두 개의 엔티티가 서로 여러 개의 엔티티와 연결될 때 사용됩니다. 예를 들어, 학생(Student)과 수업(Course)이 다대다 관계를 가질 수 있으며, 하나의 학생이 여러 수업을 들을 수 있고, 하나의 수업에 여러 학생이 참여할 수 있습니다.
+- **특징**: 다대다 관계에서는 관계를 관리하기 위해 중간 테이블(Join Table)이 필요합니다. 두 엔티티는 서로 상대방을 참조하며, 양방향으로 매핑될 수 있습니다. 보통 `@JoinTable` 어노테이션을 사용하여 중간 테이블의 이름과 외래 키를 정의합니다.
+- **동작**: 다대다 관계는 보통 양방향으로 설정되며, 관계를 관리하는 측(owning side)에서 `mappedBy` 속성을 사용하여 반대쪽 엔티티와의 관계를 지정할 수 있습니다. 반대로 관계를 관리받는 측(inverse side)은 외래 키를 직접 관리하지 않으며, 중간 테이블을 통해 관계가 연결됩니다.
+
+### 속성 설명
+
+| 속성             | 기능                                                                                                           | 기본값                                     |
+| ---------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| **mappedBy**     | 다대다 관계에서 반대쪽 엔티티에서 매핑된 필드명을 지정합니다. 이를 통해 양방향 관계에서 관계의 관리받는 측을 설정할 수 있습니다. `mappedBy`가 없는 경우, 기본적으로 중간 테이블이 생성됩니다. | 필수 설정값 아님                           |
+| **fetch**        | 페치 전략을 설정합니다.<br>- **FetchType.LAZY**: 기본값으로, 연관된 엔티티를 실제로 사용할 때 로딩합니다.<br>- **FetchType.EAGER**: 엔티티 조회 시 연관된 엔티티를 즉시 함께 조회합니다. | FetchType.LAZY                             |
+| **cascade**      | 부모 엔티티의 상태 변화가 연관된 엔티티에 전이되도록 설정합니다. 예를 들어, 부모 엔티티가 저장되거나 삭제될 때 관련된 자식 엔티티에도 적용됩니다. |                                              |
+| **targetEntity** | 관계가 설정된 대상 엔티티 클래스를 명시적으로 지정합니다. 주로 제네릭 타입을 사용할 때, 이 속성을 통해 매핑할 구체적인 엔티티 클래스를 명확히 지정할 수 있습니다. | 자동으로 추론                              |
+| **joinTable**    | 중간 테이블의 이름과 관계된 외래 키를 정의합니다. `@JoinTable` 어노테이션을 사용하여 중간 테이블의 이름과 열 이름을 지정할 수 있습니다. 이를 통해 두 엔티티 간의 관계를 나타내는 테이블을 커스터마이징할 수 있습니다. | 자동 생성된 중간 테이블 사용               |
+
+### @JoinTable 속성 설명
+
+| 속성                 | 기능                                                                                              | 기본값                                     |
+| -------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| **name**             | 중간 테이블의 이름을 정의합니다. 기본적으로는 두 엔티티 이름을 조합하여 자동으로 테이블 이름이 생성됩니다. | 자동 생성된 이름                            |
+| **joinColumns**      | 현재 엔티티와 중간 테이블 간의 외래 키를 정의합니다. `@JoinColumn` 어노테이션을 사용하여 명시합니다. | 자동 생성된 외래 키 열                      |
+| **inverseJoinColumns** | 반대쪽 엔티티와 중간 테이블 간의 외래 키를 정의합니다. `@JoinColumn` 어노테이션을 사용하여 명시합니다. | 자동 생성된 외래 키 열                      |
+
+### 예시 코드
+
+```java
+@Entity
+public class Student {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    @ManyToMany
+    @JoinTable(
+        name = "student_course", // 중간 테이블 이름
+        joinColumns = @JoinColumn(name = "student_id"), // 현재 엔티티(Student)의 외래 키 열
+        inverseJoinColumns = @JoinColumn(name = "course_id") // 반대쪽 엔티티(Course)의 외래 키 열
+    )
+    private List<Course> courses = new ArrayList<>();
+}
+
+@Entity
+public class Course {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String title;
+
+    @ManyToMany(mappedBy = "courses") // Student 엔티티에서의 관계를 역참조
+    private List<Student> students = new ArrayList<>();
+}
+```
+
+### 요약
+`@ManyToMany`는 두 엔티티 간에 다대다 관계를 설정할 때 사용되며, 중간 테이블을 통해 관계가 관리됩니다. `mappedBy` 속성을 사용하여 양방향 관계를 설정하고, `@JoinTable`을 통해 중간 테이블과 외래 키를 커스터마이징할 수 있습니다.
