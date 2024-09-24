@@ -78,12 +78,13 @@
 - [3_엔티티%20매핑.md](./JPA/3_엔티티%20매핑.md)
 - [4_연관관계 매핑](./JPA/4_연관관계%20매핑.md)
 - [5_다대다 매핑과 복합키](./JPA/5_다대다%20매핑과%20복합키.md)
-
+- [6_ N+1 문제](./JPA/N+1%20문제.md)
 - **Tip**
     - [즉시로딩vs지연로딩 실행차이](./JPA/Tip/Tip1_즉시로딩vs지연로딩%20실행차이.md)
     - [연관관계 매핑 어노테이션 1](./JPA/Tip/Tip2_JPA%20연관관계%20매핑%20어노테이션1.md)
     - [Persistent Fields vs Persistent Properties](./JPA/Tip/Persistent%20Fields%20vs%20Persistent%20Properties.md)
     - [JPA 어노테이션 2](./JPA/Tip/Tip3_JPA%20%20어노테이션2.md)
+    - [엔티티 그래프](./JPA/Tip/Tip4_엔티티%20그래프.md)
 </details>
 
 
