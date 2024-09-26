@@ -59,8 +59,15 @@
 <details>
 <summary>Network</summary>
 
-  - [OSI 7계층](./Network/1.OSI%207계층.md)
-  - [TCP/IP](./Network/TCP,IP.md)
+- **Network**
+    - [OSI 7계층](./Network/1.OSI%207계층.md)
+    - [TCP/IP](./Network/TCP,IP.md)
+    - [TCP 프로토콜](./Network/TCP%20Protocol.md)
+    - [Rx버퍼와 Tx버퍼](./Network/Rx%20버퍼와%20Tx%20버퍼.md)
+**Tip**
+    - [소켓 프로그래밍 코드분석](./Network/Tip/소켓프로그래밍%20코드분석.md)
+    - [네트워크 용어들](./Network/Tip/네트워크%20용어들.md) - 계속해서 작성할 예정
+
 </details>
 
 
