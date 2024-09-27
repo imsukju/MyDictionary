@@ -59,11 +59,10 @@
 <details>
 <summary>Network</summary>
 
-- **Network**
-    - [OSI 7계층](./Network/1.OSI%207계층.md)
-    - [TCP/IP](./Network/TCP,IP.md)
-    - [TCP 프로토콜](./Network/TCP%20Protocol.md)
-    - [Rx버퍼와 Tx버퍼](./Network/Rx%20버퍼와%20Tx%20버퍼.md)
+- [OSI 7계층](./Network/1.OSI%207계층.md)
+- [TCP/IP](./Network/TCP,IP.md)
+- [TCP 프로토콜](./Network/TCP%20Protocol.md)
+- [Rx버퍼와 Tx버퍼](./Network/Rx%20버퍼와%20Tx%20버퍼.md)
 **Tip**
     - [소켓 프로그래밍 코드분석](./Network/Tip/소켓프로그래밍%20코드분석.md)
     - [네트워크 용어들](./Network/Tip/네트워크%20용어들.md) - 계속해서 작성할 예정
@@ -92,8 +91,8 @@
 - [4_연관관계 매핑](./JPA/4_연관관계%20매핑.md)
 - [5_다대다 매핑과 복합키](./JPA/5_다대다%20매핑과%20복합키.md)
 - [6_ N+1 문제](./JPA/N+1%20문제.md)
-- [7_QueryDsl](./JPA/7_QueryDsl.md)
-- **Tip**
+- [7_QueryDsl](./JPA/7_QueryDsl.md)  
+- **Tip**  
     - [즉시로딩vs지연로딩 실행차이](./JPA/Tip/Tip1_즉시로딩vs지연로딩%20실행차이.md)
     - [연관관계 매핑 어노테이션 1](./JPA/Tip/Tip2_JPA%20연관관계%20매핑%20어노테이션1.md)
     - [Persistent Fields vs Persistent Properties](./JPA/Tip/Persistent%20Fields%20vs%20Persistent%20Properties.md)
