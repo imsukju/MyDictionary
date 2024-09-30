@@ -14,7 +14,7 @@
 ---
 
 ### 2. Same-Origin Policy(동일 출처 정책)
-
+![sop](../resource/HTTP/sameoriginpolicy.jpg) 출처 :https://www.linkedin.com/pulse/same-origin-policy-sop-behnam-yazdanpanah
 #### 2.1. 출처(Origin)란?
 **출처(Origin)**는 웹 페이지의 **프로토콜(HTTP/HTTPS)**, **호스트(도메인)**, **포트 번호**의 조합을 의미합니다. 동일 출처 정책은 한 웹 페이지가 로드된 출처와 다른 출처의 리소스에 접근하는 것을 제한하는 보안 메커니즘입니다.
 
@@ -35,8 +35,8 @@ Same-Origin Policy는 보안을 강화하기 위해 도입되었습니다. 이�
 
 ---
 
-### 3. 크로스 오리진(Cross-Origin) 요청
-
+### 3. Cross-Origin(크로스 오리진) 요청
+ ![Cross](../resource/HTTP/CrossOrigin.png) 출처: MDN - CORS
 #### 3.1. 크로스 오리진이란?
 **크로스 오리진(Cross-Origin)**은 **다른 출처**에서 리소스를 요청하는 상황을 말합니다. 동일 출처 정책은 보안을 강화하지만, 현실적으로는 다양한 출처에서 데이터를 요청할 필요가 있습니다. 이때 브라우저는 보안 정책에 따라 **크로스 오리진 요청**을 기본적으로 차단하며, 서버에서 명시적으로 허용해야만 요청을 처리할 수 있습니다.
 
