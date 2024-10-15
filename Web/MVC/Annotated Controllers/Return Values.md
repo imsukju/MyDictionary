@@ -1,4 +1,4 @@
-### Spring MVC Method Return Types 번역
+### Spring MVC Method Return Types
 
 Spring MVC의 컨트롤러 메서드에서 사용되는 반환 값 유형에 대해 설명합니다. 리액티브 유형은 모든 반환 값에 대해 지원됩니다.
 
@@ -28,4 +28,4 @@ Spring MVC의 컨트롤러 메서드에서 사용되는 반환 값 유형에 대
 - `DeferredResult`, `Callable`, `CompletableFuture` 등의 비동기 반환 유형은 비동기 요청 처리를 지원하며, 비동기적 작업의 결과를 관리하는 데 유용합니다.
 - `String`, `ModelAndView`, `View`와 같은 반환 유형은 뷰를 명시적으로 지정할 때 사용되며, MVC 패턴 기반의 웹 애플리케이션에서 많이 사용됩니다.
 
-이 표는 Spring MVC에서 다양한 요청 응답 패턴을 처리할 때 사용할 수 있는 반환 값 옵션을 제공합니다.
+이 표는 Spring MVC에서 다양한 요청 응답 패턴을 처리할 때 사용할 수 있는 반환 값 옵션을 제공합니다.  

@@ -75,7 +75,7 @@
     -[HTTPS 란?](./Network/HTTP/HTTPS란.md)
     -[HTTP의 Stateless](./Network/HTTP/HTTP의%20Stateless.md)
     -[RESTfulAPI](./Network/HTTP/RESTfulAPI.md)
-
+    -[Referer이란?](./Network/HTTP/)
 </details>
 
 
@@ -133,8 +133,9 @@
 - [Spring MVC](./Web/MVC/SpringMVC.md)
  -[DispatcherServlet](./Web/MVC/DispatcherServlet.md)
  -[SpringMVC 에서 쓰는 어노테이션 정리](./Web/MVC/SpringMVC에서%20쓰는%20어노테이션정리.md)
+ -[Validation](./Web/MVC/Validation.md)
     **Handler Method**
-    - []
+   
 
 </details>
 
