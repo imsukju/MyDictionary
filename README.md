@@ -84,6 +84,7 @@
 <summary>JAVA</summary>
 
 - [AOT컴파일] (./JAVA/AOT컴파일.md)
+- [ThreadLocal](./JAVA/ThreadLocal.md)
 - **Refliection** 
     - [Non-reflective vs reflective](/JAVA/Refliection/Non-reflective%20vs%20reflective.md)
     - [reflection(Methods)](/JAVA/Refliection/reflection(Methods).md)
@@ -150,16 +151,31 @@
 <summary>SpringBoot</summary>
 
 - [springApplicatiom.run](./SpringBoot/SpringApplication_run.md)
-
+- [Spring Boot Auto-Configuration](./SpringBoot/Spring%20Boot%20Auto-Configuration.md)
+- [spring.factories파일](./SpringBoot/spring.factories파일.md)
+- [CommandLineRunner와 ApplicationRunner](./SpringBoot/CommandLineRunner와%20ApplicationRunner.md)
 - **Annotaitions**
 
 - **Tip**
     - [spring.factories파일](./SpringBoot/spring.factories파일.md)
 
 - **Spring Data JPA**
-    -[Query Lookup Strategies](./Spring/)
-   
+    - [Query Lookup Strategies](./SpringBoot/Spring%20Data%20JPA/Query%20Lookup%20Strategies.md)
+    - [Projections](./SpringBoot/Spring%20Data%20JPA/Projections.md)
+    - [@PrePersist, @PostLoad](./SpringBoot/Spring%20Data%20JPA/@PrePersist,%20@PostLoad.md)
+    - [Aggregate Root](./SpringBoot/Spring%20Data%20JPA/Aggregate%20Root.md)
+    - [트랜잭션 격리수준](./SpringBoot/Spring%20Data%20JPA/트랜잭션%20Isolation.md)    
+    - [트랜잭션 전파 옵션(Transaction Propagation Options)](./SpringBoot/Spring%20Data%20JPA/트랜잭션%20전파%20옵션(Transaction%20Propagation%20Options).md)    
+ 
+</details>
 
+
+<details>
+<summary>SpringSecurity</summary>
+
+- [Spring Security의 Authentication(인증)과 Authorization(권한 부여) ](./SpringSecurity/Spring%20Security의%20Authentication(인증)과%20Authorization(권한%20부여).md)
+- [HttpSecurity](./SpringSecurity/HttpSecurity.md)
+- [인증필터](./SpringSecurity/인증필터.md)
 </details>
 
 
