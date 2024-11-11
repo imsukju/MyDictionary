@@ -1,6 +1,4 @@
-Spring Security에서 `addFilterBefore`, `addFilterAfter`, 그리고 `addFilter`는 `SecurityFilterChain`에 커스텀 필터를 추가할 때 사용하는 메서드들입니다. 이들은 필터의 위치를 지정하여 **필터 체인의 실행 순서를 조정**하는 데 중요한 역할을 합니다. 각 메서드의 차이점과 구체적인 작동 방식을 상세히 설명드리겠습니다.
 
----
 
 ### 1. `addFilterBefore`
 

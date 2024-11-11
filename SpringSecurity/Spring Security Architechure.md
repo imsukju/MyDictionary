@@ -60,7 +60,15 @@ SecurityFilterChain 내의 보안 필터는 일반적으로 빈이지만, Delega
 
 
 ![5](./Reesource/SpringSecurityarchitecture/Figure%205.%20Multiple%20SecurityFilterChain.png)
-위 그림에서 `FilterChainProxy`는 어느 `SecurityFilterChain`을 사용할지 결정합니다. 일치하는 첫 번째 `SecurityFilterChain`만 호출됩니다. 예를 들어, `/api/messages/` URL 요청이 들어오면 `/api/**` 패턴에 해당하는 `SecurityFilterChain0`과 먼저 일치하므로 `SecurityFilterChain0`만 호출됩니다. 비록 `SecurityFilterChainn`과도 일치하지만 호출되지 않습니다. 만약 `/messages/` URL이 요청되면 `/api/**` 패턴과 일치하지 않으므로 `FilterChainProxy`는 다른 `SecurityFilterChain`을 계속 확인합니다. 다른 `SecurityFilterChain` 인스턴스와 일치하는 것이 없다고 가정하면 `SecurityFilterChainn`이 호출됩니다.
+FilterChainProxy는 요청이 들어올 때 해당 요청에 적합한 첫 번째 SecurityFilterChain을 선택해 호출합니다. 여러 SecurityFilterChain과 일치할 수 있지만, 처음으로 일치하는 SecurityFilterChain만 호출되고 이후 체인은 무시됩니다.
+
+예를 들어, `/api/messages/` URL 요청이 들어오면 `/api/**` 패턴을 가진 SecurityFilterChain0이 먼저 일치하므로 SecurityFilterChain0만 호출됩니다. SecurityFilterChainn도 일치할 수 있지만, 첫 번째 일치 항목만 호출되므로 무시됩니다.
+
+반면 `/messages/` URL 요청이 들어오면 `/api/**` 패턴과 일치하지 않으므로 FilterChainProxy는 다음 SecurityFilterChain을 확인하게 됩니다. 마지막까지 일치하는 SecurityFilterChain이 없다면, 최종적으로 SecurityFilterChainn이 호출됩니다.
+
+각 SecurityFilterChain은 고유하게 구성될 수 있으며, 독립적으로 설정할 수 있습니다. 예를 들어, SecurityFilterChain0은 세 개의 보안 필터만 구성되어 있는 반면, SecurityFilterChainn에는 네 개의 보안 필터가 포함되어 있습니다. 또한, 특정 요청에 대해 Spring Security가 필터링을 건너뛰도록 하려면, 보안 필터가 없는 SecurityFilterChain을 구성할 수도 있습니다.
+
+
 
 참고로 `SecurityFilterChain0`에는 보안 필터 인스턴스가 세 개만 구성되어 있지만, `SecurityFilterChainn`에는 네 개의 보안 필터 인스턴스가 구성되어 있습니다. 각 `SecurityFilterChain`은 고유할 수 있으며 독립적으로 구성할 수 있다는 점이 중요합니다. 사실, Spring Security가 특정 요청을 무시하도록 하려면 보안 필터 인스턴스가 없는 `SecurityFilterChain`을 구성할 수도 있습니다.
 

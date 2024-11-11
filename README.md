@@ -169,6 +169,15 @@
  
 </details>
 
+<details>
+<summary>Cloud and Messaging Systems</summary>
+
+**Tip**
+- [yml파일분석](./Cloud%20and%20Messaging%20Systems/Tip/ym분석.md)
+
+**Kafka**
+    - [KafKa란](./)
+</details>
 
 <details>
 <summary>SpringSecurity</summary>
@@ -184,6 +193,7 @@
 - [ExecutorService](./SpringSecurity/ExecutorService.md)
 - [서블릿 인증 아키텍처](./SpringSecurity/서블릿%20인증%20아키텍처.md)
 - [mvcMatchers, antMatchers, regexMatchers](./SpringSecurity/mvcMatchers,%20antMatchers,%20regexMatchers.md)
+- [Redis 및 데이터베이스 기반 블랙리스트](./SpringSecurity/Redis%20및%20데이터베이스%20기반%20블랙리스트.md)
     - **Filter**
     - [SpringSecurity다양한필터들](./SpringSecurity/Filter/SpringSecurity다양한필터들.md)
     - [OncePerRequestFilter ](./SpringSecurity/Filter/OncePerRequestFilter.md)
