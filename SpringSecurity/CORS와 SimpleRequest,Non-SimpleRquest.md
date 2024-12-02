@@ -1,6 +1,3 @@
-CORS(Cross-Origin Resource Sharing)의 개념과 함께 **Simple Request**와 **Non-Simple Request**의 작동 원리를 더 자세히 설명해드리겠습니다. 전체적인 흐름과 브라우저 보안 원리까지 단계별로 알아보겠습니다.
-
----
 
 ### 1. CORS의 기본 원리
 
