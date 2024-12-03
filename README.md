@@ -174,17 +174,18 @@
     
 - [HATEOAS](./Cloud%20and%20Messaging%20Systems/HATEOAS.md)   
 
-
+   
 **Tip**   
 - [yml파일분석](./Cloud%20and%20Messaging%20Systems/Tip/ym분석.md)  
 
-
+   
 **Kafka**   
     - [KafKa란](./Cloud%20and%20Messaging%20Systems/Kafaka란.md)   
-
+   
 **AWs**    
     - [AWS s3](Cloud%20and%20Messaging%20Systems/AWS/AWS%20S3.md)   
-
+    - [AWS EC2 생성 및 연결 도커연결](./Cloud%20and%20Messaging%20Systems/AWS/forDocker/AWS%20EC2%20생성%20및%20연결%20도커연결.md)
+   
 </details>
 
 <details>
@@ -210,3 +211,29 @@
 </details>
 
 
+<details>
+<summary>Docker</summary>
+
+- [Docker 란?](./Docker/Docker란.md)   
+- [Dockerfile](./Docker/Dockerfile.md)
+
+</details>
+
+
+<details>
+<summary>Linux</summary>
+    
+- [Alpine Linux](./Linux/Alpine%20Linux.md)   
+- [init프로세스](./Linux/init프로세스.md)   
+- [ps 명령어](./Linux/ps%20명령어.md)   
+- [whereis Cd와pwd 차이](./Linux/whereis%20Cd와pwd%20차이.md)   
+- [리눅스의 exec 커맨드](./Linux/리눅스의%20exec%20커맨드.md)   
+- [리눅스의 fork 커맨드](./Linux/리눅스의%20fork%20커맨드.md)  
+- [마운트와 파일시스템](./Linux/마운트와%20파일시스템.md)   
+- [부모프로세스와, 자식프로세스](./Linux/부모프로세스와,%20자식프로세스.md)   
+- [시그널](./Linux/시그널.md)   
+- [프로세스 exec , fork](./Linux/프로세스%20exec%20,%20fork.md)  
+- [리눅스의 terminal, shell, 명령어](./Linux/리눅스의%20terminal,%20shell,%20명령어.md)   
+- [NameSpace](./Linux/NameSpace.md)   
+- [MakeFile이란?](./Linux/MakeFile이란.md)    
+</details>
